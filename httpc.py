@@ -40,6 +40,40 @@ def run_client(router_addr, router_port, server_addr, server_port):
     finally:
         conn.close()
 
+
+def handshake(router_addr, router_port, server_addr, server_port):
+    peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
+    conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    timeout = 5
+    try:
+        # TODO Change packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
+        p = Packet(packet_type=1,
+                   seq_num=1,
+                   peer_ip_addr=peer_ip,
+                   peer_port=server_port,
+                   payload=message.encode("utf-8"))
+          
+        conn.sendto(p.to_bytes(), (router_addr, router_port))
+        print('Send "{}" to router'.format(message))
+
+        # Try to receive a response within timeout
+        conn.settimeout(timeout)
+        print('Waiting for a response')
+        response, sender = conn.recvfrom(1024)
+        p = Packet.from_bytes(response)
+        print('Router: ', sender)
+        print('Packet: ', p)
+        print('Payload: ' + p.payload.decode("utf-8"))
+
+    except socket.timeout:
+        print('No response after {}s'.format(timeout))
+    finally:
+        conn.close()
+
+
+
+
+
 # create parser to pull out url from the command line
 parser = argparse.ArgumentParser(description='Mike Basdeo - 26788815 \r\nhttpc is a curl-like application but supports HTTP protocol only', add_help=False, formatter_class=RawTextHelpFormatter)
 parser.add_argument('--help', action='help', help='show this help message and exit')
@@ -96,6 +130,11 @@ if(args.mode == 'get'):
     message += 'Connection: close\r\n'
     message += '\r\n'
     print("Message,", message)
+
+
+# TODO Always perform a handshake before initial request
+    handshake(args.routerhost, args.routerport, args.serverhost, args.serverport)
+
     run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # post request

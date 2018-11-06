@@ -30,7 +30,7 @@ def handle_client(conn, data, sender):
         response_to_return = p.payload.decode("utf-8")
 
         
-
+        print("PacketType : ", p.packet_type)
         print("Payload : ", type(response_to_return))
         print("Payload : ", response_to_return)
         # Type returned is a string!
@@ -51,20 +51,6 @@ def handle_client(conn, data, sender):
 
     except Exception as e:
         print("Error: ", e)
-
-
-# def handle_client(conn, data, sender):
-#     print ('New client from ',  sender)
-#     try:
-#         while True:
-#             data = conn.recv(1024)
-#             response_to_return = RequestProcessor.parse_request(data)
-#             if not data:
-#                 break
-#             conn.sendall(response_to_return.encode())
-#             break
-#     finally:
-#         conn.close()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", help="echo server port", type=int, default=8007)
