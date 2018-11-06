@@ -25,28 +25,26 @@ def handle_client(conn, data, sender):
         print("Router: ", sender)
         print("Packet: ", p)
 
-        # TODO Try to send to RequestProcess here?
+
         
         response_to_return = p.payload.decode("utf-8")
 
         
         print("PacketType : ", p.packet_type)
+
+        # TODO If packet type is 1, then perform a handshake.
+
+
         print("Payload : ", type(response_to_return))
         print("Payload : ", response_to_return)
-        # Type returned is a string!
-
 
         response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
+
         print("Response : ", type(response_to_return_2))
         print("Response : ", response_to_return_2)
-        # Type returned is a string?
-        p.payload = (response_to_return_2).encode()
-        # TODO send payload to RequestProcces
-        # problem here?
 
-        # How to send a reply.
-        # The peer address of the packet p is the address of the client already.
-        # We will send the same payload of p. Thus we can re-use either `data` or `p`.
+        p.payload = (response_to_return_2).encode()
+
         conn.sendto(p.to_bytes(), sender)
 
     except Exception as e:
