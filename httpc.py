@@ -17,7 +17,6 @@ def run_client(router_addr, router_port, server_addr, server_port):
     conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     timeout = 5
     try:
-        msg = "Hello Mike"
         p = Packet(packet_type=0,
                    seq_num=1,
                    peer_ip_addr=peer_ip,
@@ -135,7 +134,7 @@ if(args.mode == 'post'):
     message += 'Host:' +server+':'+str(port)+'\r\n'
     message += 'Connection: close\r\n\r\n'
     message += data+'\r\n'
-    connect()
+    run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # output to file
 if(args.output):

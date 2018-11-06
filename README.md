@@ -5,6 +5,23 @@ Mike Basdeo 2018
 ## Run echo server
 `python httpfs.py --port 8007`
 
+## Run router
+`.\router_x64.exe`
+
+## Client GET - List all files
+`httpc.py get localhost`
+
+## Client GET - Contents of foo.txt
+`httpc.py get localhost/foo`
+
+## Client POST -  Overrite contents of file foo.txt
+`python httpc.py post -d "Assignment 3" localhost/foo`
+
+
+##################################
+###OLD
+
+
 ## Run echo server with debugging messages
 `python httpfs.py -v -d "other" --port 8807`
 
