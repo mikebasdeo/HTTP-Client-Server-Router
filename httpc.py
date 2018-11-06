@@ -40,26 +40,6 @@ def run_client(router_addr, router_port, server_addr, server_port):
     finally:
         conn.close()
 
-def connect():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.connect((server, int(port)))
-
-        sock.send(message.encode())
-
-        response = sock.recv(len(message), socket.MSG_WAITALL)
-        if(args.verbose):
-            sys.stdout.write("Response: " + response.decode("utf-8"))
-            print(sock.recv(4096).decode("utf-8"))
-            #print("Response: " + response.decode("utf-8"))
-        else:
-            print(sock.recv(4096).decode("utf-8"))
-            print("Response: " + response.decode("utf-8"))
-
-    finally:
-        sock.close()
-    
-
 # create parser to pull out url from the command line
 parser = argparse.ArgumentParser(description='Mike Basdeo - 26788815 \r\nhttpc is a curl-like application but supports HTTP protocol only', add_help=False, formatter_class=RawTextHelpFormatter)
 parser.add_argument('--help', action='help', help='show this help message and exit')
@@ -137,11 +117,11 @@ if(args.mode == 'post'):
     run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # output to file
-if(args.output):
-    f = open(args.output, 'w')
-    sys.stdout = f
-    connect()
-    f.close()
+# if(args.output):
+#     f = open(args.output, 'w')
+#     sys.stdout = f
+#     connect()
+#     f.close()
 
 
 
