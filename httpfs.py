@@ -33,19 +33,37 @@ def handle_client(conn, data, sender):
         print("PacketType : ", p.packet_type)
 
         # TODO If packet type is 1, then perform a handshake.
+        if (p.packet_type == 0):
+            print("Payload : ", type(response_to_return))
+            print("Payload : ", response_to_return)
+
+            response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
+
+            print("Response : ", type(response_to_return_2))
+            print("Response : ", response_to_return_2)
+
+            p.payload = (response_to_return_2).encode()
+
+            conn.sendto(p.to_bytes(), sender)
 
 
-        print("Payload : ", type(response_to_return))
-        print("Payload : ", response_to_return)
+        if (p.packet_type == 1):
+            print("Payload : ", type(response_to_return))
+            print("Payload : ", response_to_return)
 
-        response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
+            response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
 
-        print("Response : ", type(response_to_return_2))
-        print("Response : ", response_to_return_2)
+            print("Response : ", type(response_to_return_2))
+            print("Response : ", response_to_return_2)
 
-        p.payload = (response_to_return_2).encode()
+            p.packet_type = 2
+            p.payload = ("SYN Recieved. Here is your SYN-ACK").encode()
 
-        conn.sendto(p.to_bytes(), sender)
+            conn.sendto(p.to_bytes(), sender)
+
+
+            
+
 
     except Exception as e:
         print("Error: ", e)

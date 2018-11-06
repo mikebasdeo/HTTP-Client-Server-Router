@@ -63,6 +63,7 @@ def handshake(router_addr, router_port, server_addr, server_port):
         p = Packet.from_bytes(response)
         print('Router: ', sender)
         print('Packet: ', p)
+        print('PacketType: ' , p.packet_type)
         print('Payload: ' + p.payload.decode("utf-8"))
 
     except socket.timeout:
