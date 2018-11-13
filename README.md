@@ -17,12 +17,15 @@ PacketTypes:
 1   - SYN
 2   - SYN-ACK
 3   - ACK
+4   - ACK WITH NO RESPONSE REQUIRED
+
+- SYN and ACK are just fancy GET requests. Their payloads are the console log outputs.
 
 ### Step 1 - Run echo server
 `python httpfs.py --port 8007`
 
 ### Step 2 - Run router
-`.\router_x64.exe`
+.\router_x64.exe
 
 ### Client GET - List all files
 `python httpc.py get localhost`

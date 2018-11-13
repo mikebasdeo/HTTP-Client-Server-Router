@@ -32,7 +32,11 @@ def handle_client(conn, data, sender):
         
         print("PacketType : ", p.packet_type)
 
-        # TODO If packet type is 1, then perform a handshake.
+
+        # Found the spot
+        # if the packet is type 3, then what....
+
+
         if (p.packet_type == 0):
             print("Payload : ", type(response_to_return))
             print("Payload : ", response_to_return)
@@ -46,21 +50,36 @@ def handle_client(conn, data, sender):
 
             conn.sendto(p.to_bytes(), sender)
 
-        # Client has sent a SYN
+
+        # TODO If packet type is 1, then perform a handshake.
+        # Client has sent a SYN, so the Server has to send back an SYN-ACK
         if (p.packet_type == 1):
-            print("Payload : ", type(response_to_return))
-            print("Payload : ", response_to_return)
+            # print("Payload : ", type(response_to_return))
+            # print("Payload : ", response_to_return)
 
             response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
 
-            print("Response : ", type(response_to_return_2))
-            print("Response : ", response_to_return_2)
+            # print("Response : ", type(response_to_return_2))
+            # print("Response : ", response_to_return_2)
 
             p.packet_type = 2
             p.payload = ("SYN Recieved. Here is your SYN-ACK").encode()
 
             conn.sendto(p.to_bytes(), sender)
 
+        if (p.packet_type == 3):
+            # print("Payload : ", type(response_to_return))
+            # print("Payload : ", response_to_return)
+
+            response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
+
+            # print("Response : ", type(response_to_return_2))
+            # print("Response : ", response_to_return_2)
+
+            p.packet_type = 3
+            p.payload = ("ACK Recieved. Here is your ACK.").encode()
+
+            conn.sendto(p.to_bytes(), sender)
 
             
 

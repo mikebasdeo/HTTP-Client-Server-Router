@@ -89,6 +89,7 @@ def syn(router_addr, router_port, server_addr, server_port):
 
             if(p.packet_type == 2):
                 print("Yes, Got a SYN-ACK back, I have to send an ACK back (Packet Type of 3)")
+                # just fucking send packet of type 3 send here and don't get anything back.
                 return True
 
         except socket.timeout:
@@ -108,24 +109,26 @@ def ack(router_addr, router_port, server_addr, server_port):
                     peer_ip_addr=peer_ip,
                     peer_port=server_port,
                     payload=message.encode("utf-8"))
-            
+            print("Sending ACK")
             conn.sendto(p.to_bytes(), (router_addr, router_port))
             # print('Send "{}" to router'.format(message))
 
             # Try to receive a response within timeout
             conn.settimeout(timeout)
-            print('Waiting for a response')
+            print("m now waiting for acknowledgement of my ACK package.")
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
             # print('Router: ', sender)
             # print('Packet: ', p)
             print('PacketType: ' , p.packet_type)
             print('Payload: ' + p.payload.decode("utf-8"))
+            return True
 
         except socket.timeout:
             print('No response after {}s'.format(timeout))
         finally:
             conn.close()
+            
 
 
     
@@ -195,7 +198,9 @@ if(args.mode == 'get'):
 # TODO Always perform a handshake before initial request
     sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
     if sendSyn == True:
-        print("gotcha")
+        print("gotcha. So Send an Ack")
+        ack(args.routerhost, args.routerport, args.serverhost, args.serverport)
+        # TODO stops here for some reason
         run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # post request
