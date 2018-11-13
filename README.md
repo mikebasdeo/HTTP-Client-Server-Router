@@ -13,6 +13,7 @@ programming samples and the associated course materials.
 
 # Notes
 PacketTypes:
+0   - Actual Request
 1   - SYN
 2   - SYN-ACK
 3   - ACK

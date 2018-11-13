@@ -1,6 +1,23 @@
 #!/usr/bin/env python
 
-# Mike Basdeo - 2018
+#    _____  .__ __         __________                   .___                                                                
+#   /     \ |__|  | __ ____\______   \_____    ______ __| _/____  ____                                                      
+#  /  \ /  \|  |  |/ // __ \|    |  _/\__  \  /  ___// __ |/ __ \/  _ \                                                     
+# /    Y    \  |    <\  ___/|    |   \ / __ \_\___ \/ /_/ \  ___(  <_> )                                                    
+# \____|__  /__|__|_ \\___  >______  /(____  /____  >____ |\___  >____/                                                     
+#         \/        \/    \/       \/      \/     \/     \/    \/                                                           
+# _________                                      .___.__        ____ ___      .__                          .__  __          
+# \_   ___ \  ____   ____   ____  ___________  __| _/|__|____  |    |   \____ |__|__  __ ___________  _____|__|/  |_ ___.__.
+# /    \  \/ /  _ \ /    \_/ ___\/  _ \_  __ \/ __ | |  \__  \ |    |   /    \|  \  \/ // __ \_  __ \/  ___/  \   __<   |  |
+# \     \___(  <_> )   |  \  \__(  <_> )  | \/ /_/ | |  |/ __ \|    |  /   |  \  |\   /\  ___/|  | \/\___ \|  ||  |  \___  |
+#  \______  /\____/|___|  /\___  >____/|__|  \____ | |__(____  /______/|___|  /__| \_/  \___  >__|  /____  >__||__|  / ____|
+#         \/            \/     \/                 \/         \/             \/              \/           \/          \/     
+# _________  ________      _____ __________  _____    _____ .________                                                       
+# \_   ___ \ \_____  \    /     \\______   \/  |  |  /  |  ||   ____/                                                       
+# /    \  \/  /   |   \  /  \ /  \|     ___/   |  |_/   |  ||____  \                                                        
+# \     \____/    |    \/    Y    \    |  /    ^   /    ^   /       \                                                       
+#  \______  /\_______  /\____|__  /____|  \____   |\____   /______  /                                                       
+#         \/         \/         \/             |__|     |__|      \/  
 
 import socket
 import argparse
@@ -24,7 +41,7 @@ def run_client(router_addr, router_port, server_addr, server_port):
                    payload=message.encode("utf-8"))
           
         conn.sendto(p.to_bytes(), (router_addr, router_port))
-        print('Send "{}" to router'.format(message))
+        print('Send "{}" to rout234er'.format(message))
 
         # Try to receive a response within timeout
         conn.settimeout(timeout)
@@ -45,6 +62,7 @@ def syn(router_addr, router_port, server_addr, server_port):
     while True:
         peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # TODO Timeout will be important later!
         timeout = 5
         try:
             # TODO Change packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
@@ -55,19 +73,22 @@ def syn(router_addr, router_port, server_addr, server_port):
                     payload=message.encode("utf-8"))
             
             conn.sendto(p.to_bytes(), (router_addr, router_port))
-            print('Send "{}" to router'.format(message))
+            print(" \n ")
+            print("Sending SYN - (Beginning 3 Way Handshake)")
 
             # Try to receive a response within timeout
             conn.settimeout(timeout)
-            print('Waiting for a response')
+            print('Waiting For A Response - Should be an SYN-ACK')
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
-            print('Router: ', sender)
-            print('Packet: ', p)
-            print('PacketType: ' , p.packet_type)
-            print('Payload: ' + p.payload.decode("utf-8"))
+            # print('Router: ', sender)
+            # print('Packet: ', p)
+            print("Got A Response Back. Is it a SYN-ACK (Packet Type of 2)")
+            print('PacketType =  ' , p.packet_type)
+            # print('Payload: ' + p.payload.decode("utf-8"))
 
             if(p.packet_type == 2):
+                print("Yes, Got a SYN-ACK back, I have to send an ACK back (Packet Type of 3)")
                 return True
 
         except socket.timeout:
@@ -89,15 +110,15 @@ def ack(router_addr, router_port, server_addr, server_port):
                     payload=message.encode("utf-8"))
             
             conn.sendto(p.to_bytes(), (router_addr, router_port))
-            print('Send "{}" to router'.format(message))
+            # print('Send "{}" to router'.format(message))
 
             # Try to receive a response within timeout
             conn.settimeout(timeout)
             print('Waiting for a response')
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
-            print('Router: ', sender)
-            print('Packet: ', p)
+            # print('Router: ', sender)
+            # print('Packet: ', p)
             print('PacketType: ' , p.packet_type)
             print('Payload: ' + p.payload.decode("utf-8"))
 
@@ -170,7 +191,7 @@ if(args.mode == 'get'):
     message += 'Host:' +server+':'+str(port)+'\r\n'
     message += 'Connection: close\r\n'
     message += '\r\n'
-    print("Message,", message)
+    # print("Message,", message)
 # TODO Always perform a handshake before initial request
     sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
     if sendSyn == True:
