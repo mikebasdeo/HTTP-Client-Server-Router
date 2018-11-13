@@ -196,11 +196,7 @@ if(args.mode == 'get'):
     sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
     if sendSyn == True:
         print("gotcha")
-    run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
-
-
-
-
+        run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # post request
 if(args.mode == 'post'):
