@@ -46,7 +46,7 @@ def handle_client(conn, data, sender):
 
             conn.sendto(p.to_bytes(), sender)
 
-
+        # Client has sent a SYN
         if (p.packet_type == 1):
             print("Payload : ", type(response_to_return))
             print("Payload : ", response_to_return)

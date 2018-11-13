@@ -10,6 +10,13 @@ instance of the Automatic-Repeat-Request (ARQ) protocol called: Selective Repeat
 Selective Reject ARQ. Before starting on this Lab, we encourage you to review the
 programming samples and the associated course materials.
 
+
+# Notes
+PacketTypes:
+1   - SYN
+2   - SYN-ACK
+3   - ACK
+
 ### Step 1 - Run echo server
 `python httpfs.py --port 8007`
 
