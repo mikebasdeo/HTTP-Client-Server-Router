@@ -78,7 +78,7 @@ def handle_client(conn, data, sender):
 
             p.packet_type = 3
             p.payload = ("ACK Recieved. Here is your ACK.").encode()
-
+            print("[SERVER] - ACK Recieved. Here is your ACK")
             conn.sendto(p.to_bytes(), sender)
 
             
