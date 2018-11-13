@@ -74,21 +74,22 @@ def syn(router_addr, router_port, server_addr, server_port):
             
             conn.sendto(p.to_bytes(), (router_addr, router_port))
             print(" \n ")
-            print("Sending SYN - (Beginning 3 Way Handshake)")
+            print("-------------------BEGINNING HANDSHAKE-----------------")
+            print("[CLIENT] - Sending SYN - (Beginning 3 Way Handshake)")
 
             # Try to receive a response within timeout
             conn.settimeout(timeout)
-            print('Waiting For A Response - Should be an SYN-ACK')
+            print('[CLIENT] - Waiting For A Response - Should be an SYN-ACK')
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
             # print('Router: ', sender)
             # print('Packet: ', p)
-            print("Got A Response Back. Is it a SYN-ACK (Packet Type of 2)")
-            print('PacketType =  ' , p.packet_type)
+            print("[CLIENT] - Response Recieved. Is it a SYN-ACK? (Packet Type of 2)")
+            print('[CLIENT] - PacketType =  ' , p.packet_type)
             # print('Payload: ' + p.payload.decode("utf-8"))
 
             if(p.packet_type == 2):
-                print("Yes, Got a SYN-ACK back, I have to send an ACK back (Packet Type of 3)")
+                print("[CLIENT] - Yes, Got a SYN-ACK back, send back ACK (Packet Type of 3)")
                 # just fucking send packet of type 3 send here and don't get anything back.
                 return True
 
@@ -109,7 +110,7 @@ def ack(router_addr, router_port, server_addr, server_port):
                     peer_ip_addr=peer_ip,
                     peer_port=server_port,
                     payload=message.encode("utf-8"))
-            print("Sending ACK")
+            print("[CLIENT] - Sending ACK")
             conn.sendto(p.to_bytes(), (router_addr, router_port))
             # print('Send "{}" to router'.format(message))
 
@@ -195,7 +196,8 @@ if(args.mode == 'get'):
     message += 'Connection: close\r\n'
     message += '\r\n'
     # print("Message,", message)
-# TODO Always perform a handshake before initial request
+
+# TODO Always perform a handshake before initial request (In Progress)
     sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
     if sendSyn == True:
         print("gotcha. So Send an Ack")

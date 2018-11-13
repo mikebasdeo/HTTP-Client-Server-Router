@@ -13,10 +13,15 @@ programming samples and the associated course materials.
 
 # Notes
 PacketTypes:
+
 0   - Actual Request
+
 1   - SYN
+
 2   - SYN-ACK
+
 3   - ACK
+
 4   - ACK WITH NO RESPONSE REQUIRED
 
 - SYN and ACK are just fancy GET requests. Their payloads are the console log outputs.
@@ -25,7 +30,7 @@ PacketTypes:
 `python httpfs.py --port 8007`
 
 ### Step 2 - Run router
-.\router_x64.exe
+`.\router_x64.exe`
 
 ### Client GET - List all files
 `python httpc.py get localhost`
