@@ -30,32 +30,34 @@ import ipaddress
 url_regex = r"^((http?):\/)?\/?([^:\/\s\?]+)\/?([^:\/\s\?]+)?"
 
 def run_client(router_addr, router_port, server_addr, server_port):
-    peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
-    conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    timeout = 5
-    try:
-        p = Packet(packet_type=0,
-                   seq_num=1,
-                   peer_ip_addr=peer_ip,
-                   peer_port=server_port,
-                   payload=message.encode("utf-8"))
-          
-        conn.sendto(p.to_bytes(), (router_addr, router_port))
-        print('Send "{}" to rout234er'.format(message))
+    while True:
+        peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
+        conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        timeout = 5
+        try:
+            p = Packet(packet_type=0,
+                    seq_num=1,
+                    peer_ip_addr=peer_ip,
+                    peer_port=server_port,
+                    payload=message.encode("utf-8"))
+            
+            conn.sendto(p.to_bytes(), (router_addr, router_port))
+            print('Send "{}" to rout234er'.format(message))
 
-        # Try to receive a response within timeout
-        conn.settimeout(timeout)
-        # print('Waiting for a response')
-        response, sender = conn.recvfrom(1024)
-        p = Packet.from_bytes(response)
-        # print('Router: ', sender)
-        # print('Packet: ', p)
-        print('Payload: ' + p.payload.decode("utf-8"))
+            # Try to receive a response within timeout
+            conn.settimeout(timeout)
+            # print('Waiting for a response')
+            response, sender = conn.recvfrom(1024)
+            p = Packet.from_bytes(response)
+            # print('Router: ', sender)
+            # print('Packet: ', p)
+            print('Payload: ' + p.payload.decode("utf-8"))
+            return True
 
-    except socket.timeout:
-        print('No response after {}s'.format(timeout))
-    finally:
-        conn.close()
+        except socket.timeout:
+            print('No response after {}s'.format(timeout))
+        finally:
+            conn.close()
 
 
 def syn(router_addr, router_port, server_addr, server_port):
@@ -196,7 +198,6 @@ def handshake():
     handShakeCounter = 0
     # TODO Always perform a handshake before initial request (In Progress)
     while handShake == False:
-        print("Handshake Try # %s"  % handShakeCounter)
         sendSyn = False
         sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
