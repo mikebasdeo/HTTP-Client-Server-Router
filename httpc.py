@@ -94,7 +94,7 @@ def syn(router_addr, router_port, server_addr, server_port):
                 return True
 
         except socket.timeout:
-            print('No response after {}s'.format(timeout))
+            print('[CLIENT] - No response after {}s'.format(timeout))
         finally:
             conn.close()
 
@@ -128,7 +128,7 @@ def ack(router_addr, router_port, server_addr, server_port):
             return True
 
         except socket.timeout:
-            print('No response after {}s'.format(timeout))
+            print('[CLIENT] - No response after {}s'.format(timeout))
         finally:
             conn.close()
             
@@ -207,7 +207,6 @@ def handshake():
             if sendAck == True:
                 print("--------------------HANDSHAKE COMPLETE-----------------")
                 handShake = True
-        
     return True
 
 
