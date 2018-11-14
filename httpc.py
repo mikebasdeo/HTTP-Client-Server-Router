@@ -190,6 +190,27 @@ if(args.port):
     port = args.port
 
 
+def handshake():
+
+    handShake = False
+    handShakeCounter = 0
+    # TODO Always perform a handshake before initial request (In Progress)
+    while handShake == False:
+        print("Handshake Try # %s"  % handShakeCounter)
+        sendSyn = False
+        sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
+
+        # Add a loop here. only return true when the whole things comes back. check at each step. 
+
+        if sendSyn == True:
+            sendAck = ack(args.routerhost, args.routerport, args.serverhost, args.serverport)
+            if sendAck == True:
+                print("--------------------HANDSHAKE COMPLETE-----------------")
+                handShake = True
+        
+    return True
+
+
 
 # get request
 if(args.mode == 'get'):
@@ -199,13 +220,10 @@ if(args.mode == 'get'):
     message += '\r\n'
     # print("Message,", message)
 
-# TODO Always perform a handshake before initial request (In Progress)
-    sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
-    if sendSyn == True:
-        sendAck = ack(args.routerhost, args.routerport, args.serverhost, args.serverport)
-        if sendAck == True:
-            print("--------------------HANDSHAKE COMPLETE-----------------")
-            run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
+    
+    handShakeComplete = handshake()
+    if handShakeComplete == True:
+        run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # post request
 if(args.mode == 'post'):
