@@ -28,14 +28,6 @@ class myThread (threading.Thread):
       run_client(self.routerhost, self.routerport, self.serverhost, self.serverport, self.threadID, self.message)
       print ("Exiting " + self.name)
 
-def print_time(threadName, delay, counter):
-    while counter:
-        if exitFlag:
-            threadName.exit()
-        time.sleep(delay)
-        print ("%s: %s" % (threadName, time.ctime(time.time())))
-        counter -= 1
-
 
 def run_client(router_addr, router_port, server_addr, server_port, sequence_number, message):
     print("Hello World")
