@@ -67,7 +67,8 @@ def syn(router_addr, router_port, server_addr, server_port):
                 return True
 
         except socket.timeout:
-            print('[CLIENT] - No response after {}s'.format(timeout))
+            # print('[CLIENT] - No response after {}s'.format(timeout))
+            print('[CLIENT] - No response after %d for Packet %d ' %(timeout, p.seq_num))
         finally:
             conn.close()
 
@@ -101,7 +102,7 @@ def ack(router_addr, router_port, server_addr, server_port):
             return True
 
         except socket.timeout:
-            print('[CLIENT] - No response after {}s'.format(timeout))
+            print('[CLIENT] - No response after %d for Packet %d ' %(timeout, p.seq_num))
         finally:
             conn.close()
             
