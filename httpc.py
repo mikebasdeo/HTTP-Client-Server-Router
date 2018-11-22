@@ -241,10 +241,7 @@ if(args.mode == 'post'):
     message += 'Host:' +server+':'+str(port)+'\r\n'
     message += 'Connection: close\r\n\r\n'
     message += data+'\r\n'
-    
-    handShakeComplete = handshake()
-    if handShakeComplete == True:
-        run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
+    run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # output to file
 # if(args.output):
