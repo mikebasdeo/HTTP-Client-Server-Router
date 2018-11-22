@@ -67,20 +67,3 @@ def run_client(router_addr, router_port, server_addr, server_port, sequence_numb
             print('[CLIENT] - No response after {}s'.format(timeout))
         finally:
             conn.close()
-
-
-
-
-
-
-
-# Create new threads
-# thread1 = myThread(1, "Thread-1", 1)
-# thread2 = myThread(2, "Thread-2", 2)
-
-# Start new Threads
-# thread1.start()
-# thread2.start()
-# thread1.join()
-# thread2.join()
-# print ("Exiting Main Thread")

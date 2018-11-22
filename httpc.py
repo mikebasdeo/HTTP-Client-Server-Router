@@ -30,36 +30,6 @@ from thread import myThread
 
 url_regex = r"^((http?):\/)?\/?([^:\/\s\?]+)\/?([^:\/\s\?]+)?"
 
-# def run_client(router_addr, router_port, server_addr, server_port, sequence_number):
-#     while True:
-#         peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
-#         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#         timeout = 5
-#         try:
-#             p = Packet(packet_type=0,
-#                     seq_num=sequence_number,
-#                     peer_ip_addr=peer_ip,
-#                     peer_port=server_port,
-#                     payload=message.encode("utf-8"))
-            
-#             conn.sendto(p.to_bytes(), (router_addr, router_port))
-#             #print('Send "{}" to rout234er'.format(message))
-#             print("[CLIENT] - Sending request to Router. Sequence Number = ", p.seq_num)
-#             # Try to receive a response within timeout
-#             conn.settimeout(timeout)
-#             # print('Waiting for a response')
-#             response, sender = conn.recvfrom(1024)
-#             p = Packet.from_bytes(response)
-#             # print('Router: ', sender)
-#             # print('Packet: ', p)
-#             print('[CLIENT] - Payload from Packet: ', p.seq_num, ' - ', p.payload.decode("utf-8"))
-#             return True
-
-#         except socket.timeout:
-#             print('[CLIENT] - No response after {}s'.format(timeout))
-#         finally:
-#             conn.close()
-
 
 def syn(router_addr, router_port, server_addr, server_port):
     while True:
@@ -136,13 +106,6 @@ def ack(router_addr, router_port, server_addr, server_port):
             conn.close()
             
 
-
-    
-
-
-
-
-
 # create parser to pull out url from the command line
 parser = argparse.ArgumentParser(description='Mike Basdeo - 26788815 \r\nhttpc is a curl-like application but supports HTTP protocol only', add_help=False, formatter_class=RawTextHelpFormatter)
 parser.add_argument('--help', action='help', help='show this help message and exit')
@@ -194,7 +157,6 @@ if(args.port):
 
 
 def handshake():
-
     handShake = False
     handShakeCounter = 0
     # TODO Always perform a handshake before initial request (In Progress)
