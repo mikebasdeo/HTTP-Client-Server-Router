@@ -26,6 +26,7 @@ import sys
 from argparse import RawTextHelpFormatter
 from packet import Packet
 import ipaddress
+from thread import myThread
 
 url_regex = r"^((http?):\/)?\/?([^:\/\s\?]+)\/?([^:\/\s\?]+)?"
 
@@ -224,8 +225,17 @@ if(args.mode == 'get'):
     handShakeComplete = handshake()
     if handShakeComplete == True:
 
-        for x in range(0,3):
-            run_client(args.routerhost, args.routerport, args.serverhost, args.serverport, x)
+        # Create new threads
+        thread1 = myThread(1, "Thread-1", 1)
+        thread2 = myThread(2, "Thread-2", 2)
+        thread1.start()
+        thread2.start()
+        thread1.join()
+        thread2.join()
+        print ("Exiting Main Thread")
+
+        # for x in range(0,3):
+        #     run_client(args.routerhost, args.routerport, args.serverhost, args.serverport, x)
 
 # post request
 if(args.mode == 'post'):
