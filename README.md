@@ -31,6 +31,7 @@ PacketTypes:
 
 ### Step 2 - Run router
 `.\router_x64.exe`
+`.\router_x64.exe  --drop-rate=0.2 --max-delay=10ms --seed=1`
 
 ### Client GET - List all files
 `python httpc.py get localhost`
