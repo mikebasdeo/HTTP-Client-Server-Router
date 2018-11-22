@@ -226,8 +226,8 @@ if(args.mode == 'get'):
     if handShakeComplete == True:
 
         # Create new threads
-        thread1 = myThread(1, "Thread-1", 1)
-        thread2 = myThread(2, "Thread-2", 2)
+        thread1 = myThread(1, "Thread-1", 1, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
+        thread2 = myThread(2, "Thread-2", 2, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
         thread1.start()
         thread2.start()
         thread1.join()
