@@ -225,7 +225,6 @@ if(args.mode == 'get'):
     if handShakeComplete == True:
 
         for x in range(0,3):
-            print("hi")
             run_client(args.routerhost, args.routerport, args.serverhost, args.serverport, x)
 
 # post request
@@ -246,7 +245,8 @@ if(args.mode == 'post'):
     message += data+'\r\n'
     handShakeComplete = handshake()
     if handShakeComplete == True:
-        run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
+        for x in range(0,3):
+            run_client(args.routerhost, args.routerport, args.serverhost, args.serverport, x)
 
 # output to file
 # if(args.output):
