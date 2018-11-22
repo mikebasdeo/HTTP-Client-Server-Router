@@ -24,14 +24,13 @@ class myThread (threading.Thread):
       self.serverport = serverport
 
    def run(self):
-      print ("Starting " + self.name)
+    #   print ("Starting " + self.name)
       # print_time(self.name, self.counter, 5)
       run_client(self.routerhost, self.routerport, self.serverhost, self.serverport, self.threadID, self.message)
-      print ("Exiting " + self.name)
+    #   print ("Exiting " + self.name)
 
 
 def run_client(router_addr, router_port, server_addr, server_port, sequence_number, message):
-    print("Hello World")
     while True:
         peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -45,7 +44,7 @@ def run_client(router_addr, router_port, server_addr, server_port, sequence_numb
             
             conn.sendto(p.to_bytes(), (router_addr, router_port))
             #print('Send "{}" to rout234er'.format(message))
-            print("[CLIENT] - Sending request to Router. Sequence Number = ", p.seq_num)
+            print("[CLIENT] - Sending packet to Router. Sequence Number = ", p.seq_num)
             # Try to receive a response within timeout
             conn.settimeout(timeout)
             # print('Waiting for a response')
@@ -53,10 +52,11 @@ def run_client(router_addr, router_port, server_addr, server_port, sequence_numb
             p = Packet.from_bytes(response)
             # print('Router: ', sender)
             # print('Packet: ', p)
-            print('[CLIENT] - Payload from Packet: ', p.seq_num, ' - ', p.payload.decode("utf-8"))
+            print('[CLIENT] - PayLoad from Packet %d : %s ' %(p.seq_num, p.payload.decode("utf-8")[1:]))
+            # print('[CLIENT] - Payload from Packet: ', p.seq_num, ' - ', p.payload.decode("utf-8"))
             return True
 
         except socket.timeout:
-            print('[CLIENT] - No response after {}s'.format(timeout))
+            print('[CLIENT] - No response after %d for Packet %d ' %(timeout, p.seq_num))
         finally:
             conn.close()
