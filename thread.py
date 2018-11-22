@@ -24,17 +24,17 @@ class myThread (threading.Thread):
 
    def run(self):
       print ("Starting " + self.name)
-    #   print_time(self.name, self.counter, 5)
+      # print_time(self.name, self.counter, 5)
       run_client(self.routerhost, self.routerport, self.serverhost, self.serverport, self.threadID, self.message)
       print ("Exiting " + self.name)
 
 def print_time(threadName, delay, counter):
-   while counter:
-      if exitFlag:
-         threadName.exit()
-      time.sleep(delay)
-      print ("%s: %s" % (threadName, time.ctime(time.time())))
-      counter -= 1
+    while counter:
+        if exitFlag:
+            threadName.exit()
+        time.sleep(delay)
+        print ("%s: %s" % (threadName, time.ctime(time.time())))
+        counter -= 1
 
 
 def run_client(router_addr, router_port, server_addr, server_port, sequence_number, message):

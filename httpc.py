@@ -30,35 +30,35 @@ from thread import myThread
 
 url_regex = r"^((http?):\/)?\/?([^:\/\s\?]+)\/?([^:\/\s\?]+)?"
 
-def run_client(router_addr, router_port, server_addr, server_port, sequence_number):
-    while True:
-        peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
-        conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        timeout = 5
-        try:
-            p = Packet(packet_type=0,
-                    seq_num=sequence_number,
-                    peer_ip_addr=peer_ip,
-                    peer_port=server_port,
-                    payload=message.encode("utf-8"))
+# def run_client(router_addr, router_port, server_addr, server_port, sequence_number):
+#     while True:
+#         peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
+#         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#         timeout = 5
+#         try:
+#             p = Packet(packet_type=0,
+#                     seq_num=sequence_number,
+#                     peer_ip_addr=peer_ip,
+#                     peer_port=server_port,
+#                     payload=message.encode("utf-8"))
             
-            conn.sendto(p.to_bytes(), (router_addr, router_port))
-            #print('Send "{}" to rout234er'.format(message))
-            print("[CLIENT] - Sending request to Router. Sequence Number = ", p.seq_num)
-            # Try to receive a response within timeout
-            conn.settimeout(timeout)
-            # print('Waiting for a response')
-            response, sender = conn.recvfrom(1024)
-            p = Packet.from_bytes(response)
-            # print('Router: ', sender)
-            # print('Packet: ', p)
-            print('[CLIENT] - Payload from Packet: ', p.seq_num, ' - ', p.payload.decode("utf-8"))
-            return True
+#             conn.sendto(p.to_bytes(), (router_addr, router_port))
+#             #print('Send "{}" to rout234er'.format(message))
+#             print("[CLIENT] - Sending request to Router. Sequence Number = ", p.seq_num)
+#             # Try to receive a response within timeout
+#             conn.settimeout(timeout)
+#             # print('Waiting for a response')
+#             response, sender = conn.recvfrom(1024)
+#             p = Packet.from_bytes(response)
+#             # print('Router: ', sender)
+#             # print('Packet: ', p)
+#             print('[CLIENT] - Payload from Packet: ', p.seq_num, ' - ', p.payload.decode("utf-8"))
+#             return True
 
-        except socket.timeout:
-            print('[CLIENT] - No response after {}s'.format(timeout))
-        finally:
-            conn.close()
+#         except socket.timeout:
+#             print('[CLIENT] - No response after {}s'.format(timeout))
+#         finally:
+#             conn.close()
 
 
 def syn(router_addr, router_port, server_addr, server_port):
@@ -228,10 +228,13 @@ if(args.mode == 'get'):
         # Create new threads
         thread1 = myThread(1, "Thread-1", 1, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
         thread2 = myThread(2, "Thread-2", 2, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
+        thread3 = myThread(3, "Thread-2", 3, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
         thread1.start()
         thread2.start()
+        thread3.start()
         thread1.join()
         thread2.join()
+        thread3.join()
         print ("Exiting Main Thread")
 
         # for x in range(0,3):
@@ -255,8 +258,21 @@ if(args.mode == 'post'):
     message += data+'\r\n'
     handShakeComplete = handshake()
     if handShakeComplete == True:
-        for x in range(0,3):
-            run_client(args.routerhost, args.routerport, args.serverhost, args.serverport, x)
+        thread1 = myThread(1, "Thread-1", 1, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
+        thread2 = myThread(2, "Thread-2", 2, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
+        thread3 = myThread(3, "Thread-2", 3, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
+        thread1.start()
+        thread2.start()
+        thread3.start()
+        thread1.join()
+        thread2.join()
+        thread3.join()
+        print ("Exiting Main Thread")
+
+
+
+
+
 
 # output to file
 # if(args.output):
