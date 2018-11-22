@@ -29,21 +29,21 @@ import ipaddress
 
 url_regex = r"^((http?):\/)?\/?([^:\/\s\?]+)\/?([^:\/\s\?]+)?"
 
-def run_client(router_addr, router_port, server_addr, server_port):
+def run_client(router_addr, router_port, server_addr, server_port, sequence_number):
     while True:
         peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         timeout = 5
         try:
             p = Packet(packet_type=0,
-                    seq_num=1,
+                    seq_num=sequence_number,
                     peer_ip_addr=peer_ip,
                     peer_port=server_port,
                     payload=message.encode("utf-8"))
             
             conn.sendto(p.to_bytes(), (router_addr, router_port))
-            print('Send "{}" to rout234er'.format(message))
-
+            #print('Send "{}" to rout234er'.format(message))
+            print("[CLIENT] - Sending request to Router. Sequence Number = ", p.seq_num)
             # Try to receive a response within timeout
             conn.settimeout(timeout)
             # print('Waiting for a response')
@@ -51,11 +51,11 @@ def run_client(router_addr, router_port, server_addr, server_port):
             p = Packet.from_bytes(response)
             # print('Router: ', sender)
             # print('Packet: ', p)
-            print('Payload: ' + p.payload.decode("utf-8"))
+            print('[CLIENT] - Payload from Packet: ', p.seq_num, ' - ', p.payload.decode("utf-8"))
             return True
 
         except socket.timeout:
-            print('No response after {}s'.format(timeout))
+            print('[CLIENT] - No response after {}s'.format(timeout))
         finally:
             conn.close()
 
@@ -223,7 +223,10 @@ if(args.mode == 'get'):
     
     handShakeComplete = handshake()
     if handShakeComplete == True:
-        run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
+
+        for x in range(0,3):
+            print("hi")
+            run_client(args.routerhost, args.routerport, args.serverhost, args.serverport, x)
 
 # post request
 if(args.mode == 'post'):
@@ -241,7 +244,9 @@ if(args.mode == 'post'):
     message += 'Host:' +server+':'+str(port)+'\r\n'
     message += 'Connection: close\r\n\r\n'
     message += data+'\r\n'
-    run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
+    handShakeComplete = handshake()
+    if handShakeComplete == True:
+        run_client(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
 # output to file
 # if(args.output):
