@@ -22,6 +22,7 @@ communication with the server: 1 Mark
 
 ## Optional Tasks
 - [x] Support multiple clients at the server: 2 Marks
+- Simply run httpc.py and httpc2.py and both clients will connect to the server and complete their requests asynchronously.
 
 ## Steps To Run
 
