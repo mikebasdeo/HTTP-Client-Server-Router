@@ -30,8 +30,8 @@ PacketTypes:
 `python httpfs.py --port 8007`
 
 ### Step 2 - Run router
-`.\router_x64.exe`
-`.\router_x64.exe  --drop-rate=0.2 --max-delay=10ms --seed=1`
+`./router`
+`./router  --drop-rate=0.2 --max-delay=10ms --seed=1`
 
 ### Client GET - List all files
 `python httpc.py get localhost`
@@ -48,4 +48,8 @@ PacketTypes:
 
 ### Change server data directory
 `python httpfs.py -d "other" --port 8007`
+
+
+### Tricksy Mac'ss
+./router  --drop-rate=0.2 --max-delay=10ms --seed=1
 
