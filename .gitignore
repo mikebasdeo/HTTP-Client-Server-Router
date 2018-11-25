@@ -1,3 +1,5 @@
 
 router.log
 *.pyc
+
+*.pyc

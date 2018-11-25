@@ -40,7 +40,7 @@ PacketTypes:
 `python httpc.py get localhost/foo`
 
 ### Client POST -  Overrite contents of file foo.txt
-`python httpc.py post -d "Assignment 3" localhost/foo`
+`python httpc.py post -d "Assignment 6969" localhost/foo`
 
 
 ### Run echo server with debugging messages

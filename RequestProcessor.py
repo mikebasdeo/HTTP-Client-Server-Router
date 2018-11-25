@@ -65,7 +65,7 @@ def parse_request(request):
 
 
         else:
-            return str(os.listdir(os.getcwd() + r'\data'))
+            return str(os.listdir(os.getcwd() + r'/data'))
 
 
 
