@@ -1,24 +1,21 @@
 #!/usr/bin/env python
 
-#    _____  .__ __         __________                   .___                                                                
-#   /     \ |__|  | __ ____\______   \_____    ______ __| _/____  ____                                                      
-#  /  \ /  \|  |  |/ // __ \|    |  _/\__  \  /  ___// __ |/ __ \/  _ \                                                     
-# /    Y    \  |    <\  ___/|    |   \ / __ \_\___ \/ /_/ \  ___(  <_> )                                                    
-# \____|__  /__|__|_ \\___  >______  /(____  /____  >____ |\___  >____/                                                     
-#         \/        \/    \/       \/      \/     \/     \/    \/                                                           
-# _________                                      .___.__        ____ ___      .__                          .__  __          
-# \_   ___ \  ____   ____   ____  ___________  __| _/|__|____  |    |   \____ |__|__  __ ___________  _____|__|/  |_ ___.__.
-# /    \  \/ /  _ \ /    \_/ ___\/  _ \_  __ \/ __ | |  \__  \ |    |   /    \|  \  \/ // __ \_  __ \/  ___/  \   __<   |  |
-# \     \___(  <_> )   |  \  \__(  <_> )  | \/ /_/ | |  |/ __ \|    |  /   |  \  |\   /\  ___/|  | \/\___ \|  ||  |  \___  |
-#  \______  /\____/|___|  /\___  >____/|__|  \____ | |__(____  /______/|___|  /__| \_/  \___  >__|  /____  >__||__|  / ____|
-#         \/            \/     \/                 \/         \/             \/              \/           \/          \/     
-# _________  ________      _____ __________  _____    _____ .________                                                       
-# \_   ___ \ \_____  \    /     \\______   \/  |  |  /  |  ||   ____/                                                       
-# /    \  \/  /   |   \  /  \ /  \|     ___/   |  |_/   |  ||____  \                                                        
-# \     \____/    |    \/    Y    \    |  /    ^   /    ^   /       \                                                       
-#  \______  /\_______  /\____|__  /____|  \____   |\____   /______  /                                                       
-#         \/         \/         \/             |__|     |__|      \/  
-
+#    __     __)               ______                     
+#   (, /|  /|   , /)         (, /    )          /)       
+#     / | / |    (/_   _       /---(  _   _   _(/  _  ___
+#  ) /  |/  |__(_/(___(/_   ) / ____)(_(_/_)_(_(__(/_(_) 
+# (_/   '                  (_/ (                         
+                                                                                             
+#            ,dPYb,                                I8                                           
+#            IP'`Yb                                I8                                           
+#            I8  8I  gg                         88888888                                        
+#            I8  8'  ""                            I8                                           
+#    ,gggg,  I8 dP   gg    ,ggg,    ,ggg,,ggg,     I8          ,ggggg,     ,ggg,,ggg,    ,ggg,  
+#   dP"  "Yb I8dP    88   i8" "8i  ,8" "8P" "8,    I8         dP"  "Y8ggg ,8" "8P" "8,  i8" "8i 
+#  i8'       I8P     88   I8, ,8I  I8   8I   8I   ,I8,       i8'    ,8I   I8   8I   8I  I8, ,8I 
+# ,d8,_    _,d8b,_ _,88,_ `YbadP' ,dP   8I   Yb, ,d88b,     ,d8,   ,d8'  ,dP   8I   Yb, `YbadP' 
+# P""Y8888PP8P'"Y888P""Y8888P"Y8888P'   8I   `Y888P""Y88    P"Y8888P"    8P'   8I   `Y8888P"Y888
+                                                                                                                                                                                                 
 import socket
 import argparse
 import re
@@ -148,13 +145,12 @@ if(args.port):
 
 def handshake():
     handShake = False
-    handShakeCounter = 0
     # Always perform a handshake before initial request.
     while handShake == False:
         sendSyn = False
         sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
-        # Only return true when the whole things comes back. check at each step. 
+        # Only return true when the whole thing comes back. check at each step. 
         if sendSyn == True:
             sendAck = ack(args.routerhost, args.routerport, args.serverhost, args.serverport)
             if sendAck == True:

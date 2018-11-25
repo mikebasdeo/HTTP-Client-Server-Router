@@ -1,24 +1,21 @@
 #!/usr/bin/env python
 
-#    _____  .__ __         __________                   .___                                                                
-#   /     \ |__|  | __ ____\______   \_____    ______ __| _/____  ____                                                      
-#  /  \ /  \|  |  |/ // __ \|    |  _/\__  \  /  ___// __ |/ __ \/  _ \                                                     
-# /    Y    \  |    <\  ___/|    |   \ / __ \_\___ \/ /_/ \  ___(  <_> )                                                    
-# \____|__  /__|__|_ \\___  >______  /(____  /____  >____ |\___  >____/                                                     
-#         \/        \/    \/       \/      \/     \/     \/    \/                                                           
-# _________                                      .___.__        ____ ___      .__                          .__  __          
-# \_   ___ \  ____   ____   ____  ___________  __| _/|__|____  |    |   \____ |__|__  __ ___________  _____|__|/  |_ ___.__.
-# /    \  \/ /  _ \ /    \_/ ___\/  _ \_  __ \/ __ | |  \__  \ |    |   /    \|  \  \/ // __ \_  __ \/  ___/  \   __<   |  |
-# \     \___(  <_> )   |  \  \__(  <_> )  | \/ /_/ | |  |/ __ \|    |  /   |  \  |\   /\  ___/|  | \/\___ \|  ||  |  \___  |
-#  \______  /\____/|___|  /\___  >____/|__|  \____ | |__(____  /______/|___|  /__| \_/  \___  >__|  /____  >__||__|  / ____|
-#         \/            \/     \/                 \/         \/             \/              \/           \/          \/     
-# _________  ________      _____ __________  _____    _____ .________                                                       
-# \_   ___ \ \_____  \    /     \\______   \/  |  |  /  |  ||   ____/                                                       
-# /    \  \/  /   |   \  /  \ /  \|     ___/   |  |_/   |  ||____  \                                                        
-# \     \____/    |    \/    Y    \    |  /    ^   /    ^   /       \                                                       
-#  \______  /\_______  /\____|__  /____|  \____   |\____   /______  /                                                       
-#         \/         \/         \/             |__|     |__|      \/  
-
+#    __     __)               ______                     
+#   (, /|  /|   , /)         (, /    )          /)       
+#     / | / |    (/_   _       /---(  _   _   _(/  _  ___
+#  ) /  |/  |__(_/(___(/_   ) / ____)(_(_/_)_(_(__(/_(_) 
+# (_/   '                  (_/ (    
+                                                                                         
+#            ,dPYb,                               I8       I8                              
+#            IP'`Yb                               I8       I8                              
+#            I8  8I  gg                        88888888 88888888                           
+#            I8  8'  ""                           I8       I8                              
+#    ,gggg,  I8 dP   gg    ,ggg,    ,ggg,,ggg,    I8       I8   gg    gg    gg   ,ggggg,   
+#   dP"  "Yb I8dP    88   i8" "8i  ,8" "8P" "8,   I8       I8   I8    I8    88bgdP"  "Y8ggg
+#  i8'       I8P     88   I8, ,8I  I8   8I   8I  ,I8,     ,I8,  I8    I8    8I i8'    ,8I  
+# ,d8,_    _,d8b,_ _,88,_ `YbadP' ,dP   8I   Yb,,d88b,   ,d88b,,d8,  ,d8,  ,8I,d8,   ,d8'  
+# P""Y8888PP8P'"Y888P""Y8888P"Y8888P'   8I   `Y88P""Y8   8P""Y8P""Y88P""Y88P" P"Y8888P"    
+                                                                                                                                         
 import socket
 import argparse
 import re
@@ -35,10 +32,8 @@ def syn(router_addr, router_port, server_addr, server_port):
     while True:
         peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # TODO Timeout will be important later!
         timeout = 5
         try:
-            # TODO Change packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
             p = Packet(packet_type=1,
                     seq_num=1,
                     peer_ip_addr=peer_ip,
@@ -49,17 +44,12 @@ def syn(router_addr, router_port, server_addr, server_port):
             print(" \n ")
             print("-------------------BEGINNING HANDSHAKE-----------------")
             print("[CLIENT] - Sending SYN - (PacketType = 1)")
-
-            # Try to receive a response within timeout
             conn.settimeout(timeout)
             print('[CLIENT] - Waiting For A Response - Should be an SYN-ACK')
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
-            # print('Router: ', sender)
-            # print('Packet: ', p)
             print("[CLIENT] - Response Recieved. Is it a SYN-ACK? (Packet Type of 2)")
             print('[CLIENT] - PacketType =  ' , p.packet_type)
-            # print('Payload: ' + p.payload.decode("utf-8"))
 
             if(p.packet_type == 2):
                 print("[CLIENT] - Yes, Got a SYN-ACK back, send back ACK (Packet Type of 3)")
@@ -67,7 +57,6 @@ def syn(router_addr, router_port, server_addr, server_port):
                 return True
 
         except socket.timeout:
-            # print('[CLIENT] - No response after {}s'.format(timeout))
             print('[CLIENT] - No response after %d for Packet %d ' %(timeout, p.seq_num))
         finally:
             conn.close()
@@ -78,7 +67,7 @@ def ack(router_addr, router_port, server_addr, server_port):
         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         timeout = 5
         try:
-            # TODO Change packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
+            # Packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
             p = Packet(packet_type=3,
                     seq_num=1,
                     peer_ip_addr=peer_ip,
@@ -86,19 +75,17 @@ def ack(router_addr, router_port, server_addr, server_port):
                     payload=message.encode("utf-8"))
             print("[CLIENT] - Sending ACK")
             conn.sendto(p.to_bytes(), (router_addr, router_port))
-            # print('Send "{}" to router'.format(message))
+            
 
-            # Try to receive a response within timeout
+            # Receive a response within timeout
             conn.settimeout(timeout)
             print("[CLIENT] - Waiting For A Response -  (Should be an ACK)")
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
-            # print('Router: ', sender)
-            # print('Packet: ', p)
+
             print("[CLIENT] - Response Recieved. Is it a SYN-ACK? (Packet of Type 3)")
             print('[CLIENT] - PacketType = ' , p.packet_type)
             print("[CLIENT] - Yes, Got an ACK back. Proceed with request.")
-            # print('Payload: ' + p.payload.decode("utf-8"))
             return True
 
         except socket.timeout:
@@ -156,17 +143,14 @@ if(matcher.group(4)):
 if(args.port):
     port = args.port
 
-
 def handshake():
     handShake = False
-    handShakeCounter = 0
-    # TODO Always perform a handshake before initial request (In Progress)
+    # Always perform a handshake before initial request.
     while handShake == False:
         sendSyn = False
         sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
-        # Add a loop here. only return true when the whole things comes back. check at each step. 
-
+        # Only return true when the whole thing comes back. check at each step. 
         if sendSyn == True:
             sendAck = ack(args.routerhost, args.routerport, args.serverhost, args.serverport)
             if sendAck == True:
@@ -182,12 +166,9 @@ if(args.mode == 'get'):
     message += 'Host:' +server+':'+str(port)+'\r\n'
     message += 'Connection: close\r\n'
     message += '\r\n'
-    # print("Message,", message)
 
-    
     handShakeComplete = handshake()
     if handShakeComplete == True:
-
 
         objs = [myThread(i, "Thread", i, message, args.routerhost, args.routerport, args.serverhost, args.serverport) for i in range(10)]
         for obj in objs:
@@ -221,7 +202,7 @@ if(args.mode == 'post'):
             obj.join()
 
 
-# output to file
+# TODO Check that this still works.
 # if(args.output):
 #     f = open(args.output, 'w')
 #     sys.stdout = f
