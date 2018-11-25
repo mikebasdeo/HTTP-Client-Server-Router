@@ -50,5 +50,5 @@ communication with the server: 1 Mark
 
 
 ### Tricksy Mac'ss
-./router  --drop-rate=0.2 --max-delay=10ms --seed=1
+`./router  --drop-rate=0.2 --max-delay=10ms --seed=1`
 
