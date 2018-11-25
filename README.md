@@ -12,16 +12,16 @@ programming samples and the associated course materials.
 
 
 ## Tasks
-- [ ] Mimicking the TCP three-way handshaking technique when you in or start the
+- [x] Mimicking the TCP three-way handshaking technique when you in or start the
 communication with the server: 1 Mark
-- [ ] GET: 2.5 Marks (e.g. read the content of a file and listing files)
-- [ ] POST: 2.5 Marks (e.g. create a new file)
-- [ ] With drop rate only: 1.5 Marks
-- [ ] With delayed only: 1.5 Marks
-- [ ] With both drop and delay: 1 Mark
+- [x] GET: 2.5 Marks (e.g. read the content of a file and listing files)
+- [x] POST: 2.5 Marks (e.g. create a new file)
+- [x] With drop rate only: 1.5 Marks
+- [x] With delayed only: 1.5 Marks
+- [x] With both drop and delay: 1 Mark
 
 ## Optional Tasks
-- [ ] Support multiple clients at the server: 2 Marks
+- [x] Support multiple clients at the server: 2 Marks
 
 ## Steps To Run
 
