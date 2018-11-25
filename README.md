@@ -11,10 +11,9 @@ Selective Reject ARQ. Before starting on this Lab, we encourage you to review th
 programming samples and the associated course materials.
 
 
+## Tasks
 - [ ] Mimicking the TCP three-way handshaking technique when you in or start the
 communication with the server: 1 Mark
-
-## Tasks
 - [ ] GET: 2.5 Marks (e.g. read the content of a file and listing files)
 - [ ] POST: 2.5 Marks (e.g. create a new file)
 - [ ] With drop rate only: 1.5 Marks
@@ -24,7 +23,7 @@ communication with the server: 1 Mark
 ## Optional Tasks
 - [ ] Support multiple clients at the server: 2 Marks
 
-
+## Steps To Run
 
 ### Step 1 - Run echo server
 `python httpfs.py --port 8007`
