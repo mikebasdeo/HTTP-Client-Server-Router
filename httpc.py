@@ -35,10 +35,8 @@ def syn(router_addr, router_port, server_addr, server_port):
     while True:
         peer_ip = ipaddress.ip_address(socket.gethostbyname(server_addr))
         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # TODO Timeout will be important later!
         timeout = 5
         try:
-            # TODO Change packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
             p = Packet(packet_type=1,
                     seq_num=1,
                     peer_ip_addr=peer_ip,
@@ -49,17 +47,12 @@ def syn(router_addr, router_port, server_addr, server_port):
             print(" \n ")
             print("-------------------BEGINNING HANDSHAKE-----------------")
             print("[CLIENT] - Sending SYN - (PacketType = 1)")
-
-            # Try to receive a response within timeout
             conn.settimeout(timeout)
             print('[CLIENT] - Waiting For A Response - Should be an SYN-ACK')
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
-            # print('Router: ', sender)
-            # print('Packet: ', p)
             print("[CLIENT] - Response Recieved. Is it a SYN-ACK? (Packet Type of 2)")
             print('[CLIENT] - PacketType =  ' , p.packet_type)
-            # print('Payload: ' + p.payload.decode("utf-8"))
 
             if(p.packet_type == 2):
                 print("[CLIENT] - Yes, Got a SYN-ACK back, send back ACK (Packet Type of 3)")
@@ -67,7 +60,6 @@ def syn(router_addr, router_port, server_addr, server_port):
                 return True
 
         except socket.timeout:
-            # print('[CLIENT] - No response after {}s'.format(timeout))
             print('[CLIENT] - No response after %d for Packet %d ' %(timeout, p.seq_num))
         finally:
             conn.close()
@@ -78,7 +70,7 @@ def ack(router_addr, router_port, server_addr, server_port):
         conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         timeout = 5
         try:
-            # TODO Change packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
+            # Packet type to 1 (SYN). Then have the server recognize the packet_type and return a 2 (SYN-ACK)
             p = Packet(packet_type=3,
                     seq_num=1,
                     peer_ip_addr=peer_ip,
@@ -86,19 +78,17 @@ def ack(router_addr, router_port, server_addr, server_port):
                     payload=message.encode("utf-8"))
             print("[CLIENT] - Sending ACK")
             conn.sendto(p.to_bytes(), (router_addr, router_port))
-            # print('Send "{}" to router'.format(message))
+            
 
-            # Try to receive a response within timeout
+            # Receive a response within timeout
             conn.settimeout(timeout)
             print("[CLIENT] - Waiting For A Response -  (Should be an ACK)")
             response, sender = conn.recvfrom(1024)
             p = Packet.from_bytes(response)
-            # print('Router: ', sender)
-            # print('Packet: ', p)
+
             print("[CLIENT] - Response Recieved. Is it a SYN-ACK? (Packet of Type 3)")
             print('[CLIENT] - PacketType = ' , p.packet_type)
             print("[CLIENT] - Yes, Got an ACK back. Proceed with request.")
-            # print('Payload: ' + p.payload.decode("utf-8"))
             return True
 
         except socket.timeout:
@@ -160,13 +150,12 @@ if(args.port):
 def handshake():
     handShake = False
     handShakeCounter = 0
-    # TODO Always perform a handshake before initial request (In Progress)
+    # Always perform a handshake before initial request (In Progress)
     while handShake == False:
         sendSyn = False
         sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
         # Add a loop here. only return true when the whole things comes back. check at each step. 
-
         if sendSyn == True:
             sendAck = ack(args.routerhost, args.routerport, args.serverhost, args.serverport)
             if sendAck == True:
@@ -182,12 +171,9 @@ if(args.mode == 'get'):
     message += 'Host:' +server+':'+str(port)+'\r\n'
     message += 'Connection: close\r\n'
     message += '\r\n'
-    # print("Message,", message)
 
-    
     handShakeComplete = handshake()
     if handShakeComplete == True:
-
 
         objs = [myThread(i, "Thread", i, message, args.routerhost, args.routerport, args.serverhost, args.serverport) for i in range(10)]
         for obj in objs:
@@ -221,7 +207,7 @@ if(args.mode == 'post'):
             obj.join()
 
 
-# output to file
+# TODO Check that this still works.
 # if(args.output):
 #     f = open(args.output, 'w')
 #     sys.stdout = f
