@@ -146,16 +146,15 @@ if(matcher.group(4)):
 if(args.port):
     port = args.port
 
-
 def handshake():
     handShake = False
     handShakeCounter = 0
-    # Always perform a handshake before initial request (In Progress)
+    # Always perform a handshake before initial request.
     while handShake == False:
         sendSyn = False
         sendSyn = syn(args.routerhost, args.routerport, args.serverhost, args.serverport)
 
-        # Add a loop here. only return true when the whole things comes back. check at each step. 
+        # Only return true when the whole things comes back. check at each step. 
         if sendSyn == True:
             sendAck = ack(args.routerhost, args.routerport, args.serverhost, args.serverport)
             if sendAck == True:
