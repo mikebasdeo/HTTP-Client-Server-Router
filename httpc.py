@@ -176,7 +176,7 @@ def handshake():
 
 
 
-# get request
+# GET REQUEST
 if(args.mode == 'get'):
     message  = 'GET /'+query_param+' HTTP/1.1\r\n'
     message += 'Host:' +server+':'+str(port)+'\r\n'
@@ -188,22 +188,15 @@ if(args.mode == 'get'):
     handShakeComplete = handshake()
     if handShakeComplete == True:
 
-        # Create new threads
-        thread1 = myThread(1, "Thread-1", 1, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
-        thread2 = myThread(2, "Thread-2", 2, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
-        thread3 = myThread(3, "Thread-2", 3, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
-        thread1.start()
-        thread2.start()
-        thread3.start()
-        thread1.join()
-        thread2.join()
-        thread3.join()
-        print ("Exiting Main Thread")
 
-        # for x in range(0,3):
-        #     run_client(args.routerhost, args.routerport, args.serverhost, args.serverport, x)
+        objs = [myThread(i, "Thread", i, message, args.routerhost, args.routerport, args.serverhost, args.serverport) for i in range(10)]
+        for obj in objs:
+            obj.start()
+        for ojb in objs:
+            obj.join()
 
-# post request
+
+# POST REQUEST
 if(args.mode == 'post'):
     if(args.data):
         data = args.data
@@ -221,16 +214,11 @@ if(args.mode == 'post'):
     message += data+'\r\n'
     handShakeComplete = handshake()
     if handShakeComplete == True:
-        thread1 = myThread(1, "Thread-1", 1, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
-        thread2 = myThread(2, "Thread-2", 2, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
-        thread3 = myThread(3, "Thread-2", 3, message, args.routerhost, args.routerport, args.serverhost, args.serverport)
-        thread1.start()
-        thread2.start()
-        thread3.start()
-        thread1.join()
-        thread2.join()
-        thread3.join()
-        print ("Exiting Main Thread")
+        objs = [myThread(i, "Thread", i, message, args.routerhost, args.routerport, args.serverhost, args.serverport) for i in range(10)]
+        for obj in objs:
+            obj.start()
+        for ojb in objs:
+            obj.join()
 
 
 # output to file
