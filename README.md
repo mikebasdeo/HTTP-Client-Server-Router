@@ -14,7 +14,7 @@ programming samples and the associated course materials.
 # Notes
 PacketTypes:
 
-0   - Actual Request
+0   - Request
 
 1   - SYN
 

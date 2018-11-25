@@ -6,11 +6,11 @@ from packet import Packet
 
 
 def run_server(port):
-    print("Server RUnning!")
+    print("[Server] - Server Started.")
     conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         conn.bind(('', port))
-        print('Echo server is listening at', port)
+        # print("[Server] - Server is listening at, port")
         while True:
             data, sender = conn.recvfrom(1024)
             handle_client(conn, data, sender)
@@ -22,15 +22,17 @@ def run_server(port):
 def handle_client(conn, data, sender):
     try:
         p = Packet.from_bytes(data)
-        print("Router: ", sender)
-        print("Packet: ", p)
+        print("[Server] - Request from Client @: ", sender)
+        # print("[Server] - Packet Recieved: ", p)
 
 
         
         response_to_return = p.payload.decode("utf-8")
 
+
+
         
-        print("PacketType : ", p.packet_type)
+        # print("[Server] - PacketType : ", p.packet_type)
 
 
         # Found the spot
@@ -38,15 +40,17 @@ def handle_client(conn, data, sender):
 
 
         if (p.packet_type == 0):
-            print("Payload : ", type(response_to_return))
-            print("Payload : ", response_to_return)
+            print("[Server] - Request : ", p.packet_type)
+            print("[Server] - Payload : ", type(response_to_return))
+            print("[Server] - Payload : ", response_to_return)
 
             response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
 
-            print("Response : ", type(response_to_return_2))
-            print("Response : ", response_to_return_2)
+            print("[Server] - Response : ", type(response_to_return_2))
+            print("[Server] - Response : ", response_to_return_2)
 
             p.payload = (response_to_return_2).encode()
+            
 
             conn.sendto(p.to_bytes(), sender)
 
@@ -54,38 +58,40 @@ def handle_client(conn, data, sender):
         # TODO If packet type is 1, then perform a handshake.
         # Client has sent a SYN, so the Server has to send back an SYN-ACK
         if (p.packet_type == 1):
-            # print("Payload : ", type(response_to_return))
-            # print("Payload : ", response_to_return)
+            print("[Server] - PacketType (SYN): ", p.packet_type)
+            # print("[Server] - Payload : ", type(response_to_return))
+            # print("[Server] - Payload : ", response_to_return)
 
             response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
 
-            # print("Response : ", type(response_to_return_2))
-            # print("Response : ", response_to_return_2)
+            # print("[Server] - Response : ", type(response_to_return_2))
+            # print("[Server] - Response : ", response_to_return_2)
 
             p.packet_type = 2
             p.payload = ("SYN Recieved. Here is your SYN-ACK").encode()
+            print("[Server] - SYN Recieved. Here is your SYN-ACK")
 
             conn.sendto(p.to_bytes(), sender)
 
         if (p.packet_type == 3):
-            # print("Payload : ", type(response_to_return))
-            # print("Payload : ", response_to_return)
+            # print("[Server] - Payload : ", type(response_to_return))
+            # print("[Server] - Payload : ", response_to_return)
 
             response_to_return_2 = RequestProcessor.parse_request(response_to_return.encode())
 
-            # print("Response : ", type(response_to_return_2))
-            # print("Response : ", response_to_return_2)
+            # print("[Server] - Response : ", type(response_to_return_2))
+            # print("[Server] - Response : ", response_to_return_2)
 
             p.packet_type = 3
             p.payload = ("ACK Recieved. Here is your ACK.").encode()
-            print("[SERVER] - ACK Recieved. Here is your ACK")
+            print("[Server] - ACK Recieved. Here is your ACK")
             conn.sendto(p.to_bytes(), sender)
 
             
 
 
     except Exception as e:
-        print("Error: ", e)
+        print("[Server] - Error: ", e)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", help="echo server port", type=int, default=8007)
