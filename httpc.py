@@ -102,7 +102,7 @@ def ack(router_addr, router_port, server_addr, server_port):
             return True
 
         except socket.timeout:
-            print('[CLIENT] - No response after %d sec. for Packet %d ' %(timeout, p.seq_num))
+            print('[CLIENT] - No response after %ds for Packet %d ' %(timeout, p.seq_num))
         finally:
             conn.close()
             
